@@ -1,0 +1,70 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card shadow border-0">
+        <div class="card-body p-4">
+          <h2 class="text-center mb-4">INICIAR SESIÓN</h2>
+          <form (ngSubmit)="submit()">
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="usuario@ejemplo.com"
+                [ngModel]="email()"
+                name="email"
+                (ngModelChange)="email.set($event)"
+                required
+              >
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Contraseña</label>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="••••••••"
+                [ngModel]="password()"
+                name="password"
+                (ngModelChange)="password.set($event)"
+                required
+              >
+            </div>
+
+            <!-- Corrección del @if para errores -->
+            @if (errorMessage()) {
+              <div class="alert alert-danger">
+                {{ errorMessage() }}
+              </div>
+            }
+
+            <button type="submit" class="btn btn-primary w-100 mb-3" [disabled]="isLoading()">
+              <!-- Corrección del @if para el estado de carga -->
+              @if (isLoading()) {
+                <span>Cargando...</span>
+              } @else {
+                <span>Entrar</span>
+              }
+            </button>
+
+            <div class="text-center">
+              <small>¿No tenés cuenta? <a routerLink="/registro">Registrate acá</a></small>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Corrección del @for para los accesos rápidos -->
+      <div class="mt-3 d-flex gap-2">
+        @for (quick of quickAccess(); track quick.label) {
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm w-100"
+            (click)="fillQuickAccess(quick)"
+          >
+            {{ quick.label }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

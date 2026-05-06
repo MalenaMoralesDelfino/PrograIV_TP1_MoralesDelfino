@@ -1,0 +1,74 @@
+@if(perfil()){
+<div class="container mt-5">
+  <div class="card mx-auto" style="max-width: 1000px;">
+    <div class="card-body text-center">
+      <img [src]="perfil.avatar_url" class="rounded-circle mb-3" width="150" alt="Foto de perfil de {{ perfil.name }}">
+      <h2 class="card-title">{{ perfil.name }}</h2>
+      <p class="card-text">{{ perfil.bio }}</p>
+      <a [href]="perfil.html_url" target="_blank" class="btn btn-dark" rel="noopener noreferrer">Ver Perfil GitHub</a>
+    </div>
+  </div>
+  <div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 1000px;">
+      <div class="card-body" style="text-align: justify;">
+
+        <h3 class="text-dark border-bottom pb-2 text-center">SUDOKU</h3>
+
+        <p class="mt-3 border-bottom pb-2">
+          El Sudoku es un rompecabezas lógico-matemático que consiste en completar una cuadrícula de 9x9
+          celdas (dividida en subcuadrículas de 3x3 llamadas "bloques" o "regiones") utilizando números del
+          1 al 9. El juego comienza con algunos números ya colocados (pistas), y el objetivo es llenar los espacios
+          vacíos basándose únicamente en la lógica.
+        </p>
+
+        <div class="mt-3 border-bottom pb-3">
+          <strong>¿Cómo jugar?</strong>
+          <p class="mb-1">Es muy simple, cada número del 1 al 9 debe aparecer exactamente una vez en:</p>
+          <ul class="ps-3 mb-2"> 
+            <li>Cada fila horizontal.</li>
+            <li>Cada columna vertical.</li>
+            <li>Cada bloque de 3x3 celdas.</li>
+          </ul>
+          <small class="text-muted">Consejo para principiantes: Nunca adivines. Utiliza el proceso de eliminación; si
+            una fila ya tiene un "5", sabes que no puedes poner otro "5" en ninguna otra casilla de esa misma</small>
+        </div>
+
+        <div class="mt-3">
+          <strong>¿Para qué sirve?</strong>
+          <p class="mb-2">Más allá de ser un pasatiempo, el Sudoku es una herramienta de entrenamiento cerebral que
+            ofrece
+            diversos
+            beneficios:</p>
+          <ul>
+            <li>Estimulación cognitiva: Activa el pensamiento lógico, analítico y la capacidad de resolución
+              de problemas.</li>
+            <li>Mejora de la memoria y concentración: Ayuda a retener información a corto plazo (memoria de
+              trabajo) y entrena al cerebro para bloquear distracciones.</li>
+            <li>Salud mental a largo plazo: Practicarlo regularmente puede ayudar a retrasar el deterioro
+              cognitivo asociado al envejecimiento y reducir el
+              estrés.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+}
+@else if (msjError()) {
+
+<div class="container mt-5 text-center">
+  <div class="alert alert-danger">
+    {{ msjError() }}
+  </div>
+</div>
+
+}
+@else if (cargando()) {
+  <div class="text-center mt-5">
+    <div class="spinner-border text-dark" role="status"></div>
+    <p class="mt-2">Cargando perfil de GitHub...</p>
+  </div>
+}
+
