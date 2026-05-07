@@ -1,50 +1,63 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { createClient, User } from '@supabase/supabase-js';
 
 const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
 const SUPABASE_ANON_KEY = 'TU_ANON_KEY';
-const LOG_TABLE = 'auth_logs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  private usuario = signal<User | null>(null);
-  readonly isAuthenticated = computed(() => !!this.usuario());
-  readonly userId = computed(() => this.usuario()?.id ?? null);
+  private _usuarioActual = signal<User | null>(null);
+  readonly usuarioAutenticado = this._usuarioActual.asReadonly();
 
-  async login(email: string, password: string): Promise<User> {
-    const { data, error } = await this.supabase.auth.signInWithPassword({
-      email,
-      password
-    });
+  async login(email: string, password: string): Promise<void> {
+    try {
+      const { data, error } = await this.supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
-    if (error || !data.user) {
-      throw new Error(error?.message ?? 'No se pudo iniciar sesión');
-    }
+      if (error) {
+        let mensaje = 'Error al iniciar sesión';
 
-    this.usuario.set(data.user);
-    await this.recordLogin(data.user.id);
+        if (error.status === 400) {
+          mensaje = 'Credenciales inválidas. Revisa tu email y contraseña.';
+        } else if (error.status === 429) {
+          mensaje = 'Demasiados intentos. Intenta más tarde.';
+        }
 
-    return data.user;
-  }
-
-  logout(): void {
-    this.usuario.set(null);
-    void this.supabase.auth.signOut();
-  }
-
-  private async recordLogin(userId: string): Promise<void> {
-    const { error } = await this.supabase.from(LOG_TABLE).insert([
-      {
-        user_id: userId,
-        event: 'login'
+        throw new Error(mensaje);
       }
-    ]);
+      if (!data.user) {
+        throw new Error('No se pudo obtener el usuario.');
+      }
 
-    if (error) {
-      console.error('Error al guardar el log de auditoría:', error.message);
+      this._usuarioActual.set(data.user);
+
+    } catch (error: any) {
+      console.error('Error inesperado en login:', error);
+      throw error;
+    }
+  }
+
+
+  async logout(): Promise<void> {
+    try {
+
+      const { error } = await this.supabase.auth.signOut();
+
+      if (error) {
+        throw new Error('No se pudo cerrar sesión');
+      }
+
+      this._usuarioActual.set(null);
+
+    } catch (error: any) {
+
+      console.error('Error al cerrar sesión:', error);
+      throw error;
     }
   }
 }

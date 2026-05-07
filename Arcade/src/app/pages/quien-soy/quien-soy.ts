@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
-import { GithubService } from '../../services/github-service';
+import { GithubService } from '../../services/github.service';
 import { PerfilGithub } from '../../models/perfil-github';
 import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs';
@@ -32,7 +32,7 @@ export class QuienSoy implements OnInit {
       },
       error: (err) => {
         console.error('Error al obtener el perfil de GitHub:', err);
-        this.msjError.set('No se pudo cargar el perfil de GitHub. Por favor, inténtalo de nuevo más tarde.');
+        this.msjError.set(err.message || 'Error inesperado'); 
       }
     });
   }

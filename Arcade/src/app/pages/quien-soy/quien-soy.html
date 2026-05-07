@@ -1,4 +1,17 @@
-@if(perfil()){
+@if (cargando()) {
+<div class="text-center mt-5">
+  <div class="spinner-border text-dark" role="status"></div>
+  <p class="mt-2">Cargando perfil de GitHub...</p>
+</div>
+}
+@else if (msjError()) {
+<div class="container mt-5 text-center">
+  <div class="alert alert-danger">
+    {{ msjError() }}
+  </div>
+</div>
+}
+@else if(perfil(); as ){
 <div class="container mt-5">
   <div class="card mx-auto" style="max-width: 1000px;">
     <div class="card-body text-center">
@@ -24,7 +37,7 @@
         <div class="mt-3 border-bottom pb-3">
           <strong>¿Cómo jugar?</strong>
           <p class="mb-1">Es muy simple, cada número del 1 al 9 debe aparecer exactamente una vez en:</p>
-          <ul class="ps-3 mb-2"> 
+          <ul class="ps-3 mb-2">
             <li>Cada fila horizontal.</li>
             <li>Cada columna vertical.</li>
             <li>Cada bloque de 3x3 celdas.</li>
@@ -53,22 +66,5 @@
       </div>
     </div>
   </div>
-
 </div>
 }
-@else if (msjError()) {
-
-<div class="container mt-5 text-center">
-  <div class="alert alert-danger">
-    {{ msjError() }}
-  </div>
-</div>
-
-}
-@else if (cargando()) {
-  <div class="text-center mt-5">
-    <div class="spinner-border text-dark" role="status"></div>
-    <p class="mt-2">Cargando perfil de GitHub...</p>
-  </div>
-}
-

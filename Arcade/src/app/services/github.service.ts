@@ -17,7 +17,7 @@ export class GithubService {
       return of(this.cache);
     }
 
-    return this.http.get<PerfilGithub>(this.apiUrl).pipe(
+    return this.http.get<any>(this.apiUrl).pipe(
       map(res => ({
         name: res.name,
         avatar_url: res.avatar_url,
@@ -26,8 +26,18 @@ export class GithubService {
       })),
       tap(perfilObtenido => this.cache = perfilObtenido),
       catchError((err) => {
-        console.error('Error al obtener el perfil de GitHub:', err);
-        return throwError(() => new Error('No se pudo cargar el perfil de GitHub. Por favor, inténtalo de nuevo más tarde.'));
+        let mensajeError = 'Ocurrió un error inesperado';
+
+        if (err.status === 404) {
+          mensajeError = 'El usuario de GitHub no existe';
+        } else if (err.status === 403) {
+          mensajeError = 'Límite de peticiones de GitHub excedido. Intenta más tarde';
+        } else if (err.status === 0) {
+          mensajeError = 'No hay conexión a internet';
+        }
+
+        console.error('Detalle técnico del error:', err);
+        return throwError(() => new Error(mensajeError));
       })
     );
   }
