@@ -1,1 +1,57 @@
-<p>home works!</p>
+<main class="container mt-5">
+
+  <h1 class="text-center mb-4">
+    Juegos Disponibles
+  </h1>
+
+  @if (mensaje()) {
+    <div class="alert alert-warning text-center">
+      {{ mensaje() }}
+    </div>
+  }
+
+  <div class="row g-4">
+
+    @for (juego of juegos; track juego.nombre) {
+
+      <div class="col-md-6 col-lg-3">
+
+        <div
+          class="card h-100 shadow juego-card"
+          (click)="abrirJuego(juego.ruta)"
+        >
+
+          <img
+            [src]="juego.imagen"
+            [alt]="juego.nombre"
+            class="card-img-top juego-img"
+          >
+
+          <div class="card-body d-flex flex-column">
+
+            <h5 class="card-title text-center">
+              {{ juego.nombre }}
+            </h5>
+
+            <p class="card-text flex-grow-1">
+              {{ juego.subtitulo }}
+            </p>
+
+            <button
+              class="btn btn-dark w-100"
+              type="button"
+            >
+              Jugar
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+</main>

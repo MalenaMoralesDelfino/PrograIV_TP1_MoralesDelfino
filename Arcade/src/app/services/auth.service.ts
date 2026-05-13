@@ -1,16 +1,15 @@
 import { Injectable, signal } from '@angular/core';
-import { createClient, User } from '@supabase/supabase-js';
-
-const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
-const SUPABASE_ANON_KEY = 'TU_ANON_KEY';
+import { User } from '@supabase/supabase-js';
+import { supabase } from '../../enviroments/supabase.environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  private supabase = supabase;
   private _usuarioActual = signal<User | null>(null);
   readonly usuarioAutenticado = this._usuarioActual.asReadonly();
+  
 
   async login(email: string, password: string): Promise<void> {
     try {
@@ -38,7 +37,10 @@ export class AuthService {
 
     } catch (error: any) {
       console.error('Error inesperado en login:', error);
-      throw error;
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('Error al iniciar sesión', { cause: error });
     }
   }
 
@@ -48,16 +50,12 @@ export class AuthService {
 
       const { error } = await this.supabase.auth.signOut();
 
-      if (error) {
-        throw new Error('No se pudo cerrar sesión');
-      }
-
+      if (error) throw error;
       this._usuarioActual.set(null);
 
     } catch (error: any) {
-
-      console.error('Error al cerrar sesión:', error);
-      throw error;
+      console.error('Error inesperado en logout:', error);
+      throw new Error('Error al cerrar sesión', { cause: error });
     }
   }
 }

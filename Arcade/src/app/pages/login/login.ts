@@ -16,28 +16,28 @@ export class Login {
 
   readonly email = signal('');
   readonly password = signal('');
-  readonly isLoading = signal(false);
-  readonly errorMessage = signal('');
-  readonly quickAccess = signal([
+  readonly cargando = signal(false);
+  readonly mensajeError = signal('');
+  readonly accesoRapido = signal([
     { label: 'Admin', email: 'admin@arcade.test', password: 'Admin123!' },
     { label: 'Invitado', email: 'invitado@arcade.test', password: 'Invitado123!' }
   ]);
 
   async submit() {
-    this.errorMessage.set('');
-    this.isLoading.set(true);
+    this.mensajeError.set('');
+    this.cargando.set(true);
 
     try {
       await this.authService.login(this.email(), this.password());
       await this.router.navigate(['/home']);
     } catch (error) {
-      this.errorMessage.set(error instanceof Error ? error.message : 'Error inesperado');
+      this.mensajeError.set(error instanceof Error ? error.message : 'Error inesperado al iniciar sesión');
     } finally {
-      this.isLoading.set(false);
+      this.cargando.set(false);
     }
   }
 
-  fillQuickAccess(user: { email: string; password: string }) {
+  completarAccesoRapido(user: { email: string; password: string }) {
     this.email.set(user.email);
     this.password.set(user.password);
   }

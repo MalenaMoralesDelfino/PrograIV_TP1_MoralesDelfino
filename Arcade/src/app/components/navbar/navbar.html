@@ -1,32 +1,68 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
-    <div class="container-fluid">
-        <a class="navbar-brand" routerLink="/home">
-            <img src="/logo.jpg" alt="Arcade Logo"  class="d-inline-block align-text-top" width="50" height="50">
-        </a>
+<header class="bg-dark text-white shadow d-flex justify-content-between align-items-center flex-wrap p-2">
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto text-end">
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/home" routerLinkActive="active"
-                        [routerLinkActiveOptions]="{ exact: true }">Home</a>
-                    <!-- evita que este home activo en otras rutas -->
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/registro" routerLinkActive="active">Registro</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/juegos" routerLinkActive="active">Juegos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/quien-soy" routerLinkActive="active">Quién Soy</a>
-                </li>
-            </ul>
+    <div class="d-flex align-items-center">
+        <img src="/logo.jpg" alt="Arcade Logo" width="60" height="60" class="me-3 rounded">
+        <div>
+            <h1 class="h3 m-0">Arcade</h1>
         </div>
     </div>
-</nav>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto text-end">
+
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/home" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            Home
+                        </a>
+                    </li>
+                    
+                    @if (usuarioAutenticado()) {
+
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/perfil" routerLinkActive="active">
+                            Perfil
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <button class="nav-link btn btn-link" (click)="logout()">
+                            Logout
+                        </button>
+                    </li>
+
+                    } @else {
+
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/login" routerLinkActive="active">
+                            Login
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/registro" routerLinkActive="active">
+                            Registro
+                        </a>
+                    </li>
+
+                    }
+
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/quien-soy" routerLinkActive="active">
+                            Quién Soy
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+</header>

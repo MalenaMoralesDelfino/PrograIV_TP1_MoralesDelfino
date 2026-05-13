@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap, map, catchError, throwError } from 'rxjs';
 import { PerfilGithub } from '../models/perfil-github';
@@ -7,10 +7,9 @@ import { PerfilGithub } from '../models/perfil-github';
   providedIn: 'root',
 })
 export class GithubService {
-  private apiUrl = 'https://api.github.com/users/MalenaMoralesDelfino';
+  private readonly apiUrl = 'https://api.github.com/users/MalenaMoralesDelfino';
   private cache: PerfilGithub | null = null;
-
-  constructor(private http: HttpClient) { }
+   private readonly http = inject(HttpClient);
 
   getPerfilGithub(): Observable<PerfilGithub> {
     if (this.cache) {
