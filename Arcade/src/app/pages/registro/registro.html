@@ -1,1 +1,82 @@
-<p>registro works!</p>
+<main class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card bg-dark text-white shadow-lg border-0">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-4">REGISTRO</h2>
+
+                    <form [formGroup]="registroForm" (ngSubmit)="submit()">
+
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" id="nombre" class="form-control" formControlName="nombre">
+                            @if (nombre?.invalid && nombre?.touched) {
+                            <small class="text-danger">El nombre es obligatorio</small>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="apellido" class="form-label">Apellido</label>
+                            <input type="text" id="apellido" class="form-control" formControlName="apellido">
+                            @if (apellido?.invalid && apellido?.touched) {
+                            <small class="text-danger">El apellido es obligatorio</small>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edad" class="form-label">Edad</label>
+                            <input type="number" id="edad" class="form-control" formControlName="edad">
+                            @if (edad?.hasError('required') && edad?.touched) {
+                            <small class="text-danger">La edad es obligatoria</small>
+                            }
+                            @if ( edad?.hasError('min') && edad?.touched) {
+                            <small class="text-danger">Debes ser mayor de edad</small>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" class="form-control" formControlName="email">
+                            @if (email?.hasError('required') && email?.touched) {
+                            <small class="text-danger">El email es obligatorio</small>
+                            }
+                            @if (email?.hasError('email') && email?.touched) {
+                            <small class="text-danger">Formato de email inválido</small>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" id="password" class="form-control" formControlName="password">
+                            @if (password?.hasError('required') && password?.touched) {
+                            <small class="text-danger">La contraseña es obligatoria</small>
+                            }
+                            @if (password?.hasError('minlength') && password?.touched) {
+                            <small class="text-danger">La contraseña debe tener mínimo 6 caracteres</small>
+                            }
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="repetirPassword" class="form-label">Repetir Contraseña</label>
+                            <input type="password" id="repetirPassword" class="form-control" formControlName="repetirPassword">
+                            @if (repetirPassword?.hasError('required') && repetirPassword?.touched) {
+                            <small class="text-danger">Debes repetir la contraseña</small>
+                            }
+                            @if (repetirPassword?.hasError('passwordsDistintas') && repetirPassword?.touched) {
+                            <small class="text-danger">Las contraseñas no coinciden</small>
+                            }
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Registrarse</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
